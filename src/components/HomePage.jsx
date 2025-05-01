@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, CardContent } from "./ui/Card";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/Input";
 import { Link, useNavigate } from "react-router-dom";
 import Container from "./Container";
 import RecipeCarousel from "./RecipeCarousel";
