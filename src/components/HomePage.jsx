@@ -29,11 +29,30 @@ function HomePage() {
   );
 
   useEffect(() => {
-    axios
-      .get("https://www.themealdb.com/api/json/v1/1/categories.php")
-      .then((res) => setCategories(res.data.categories))
-      .catch((err) => console.error(err));
+    const load = async () => {
+      const own = await getJSON("/recipes");               // ← our DB
+      const ext = await axios
+        .get("https://www.themealdb.com/api/json/v1/1/categories.php")
+        .then(res => res.data.categories);
+      setCategories([...own, ...ext]);
+    };
+    load();
   }, []);
+  
+  useEffect(()=>{             // preload existing
+    getJSON(`/recipes/${id}`).then(r=>{
+      setTitle(r.title);
+      setInstr(r.instructions);
+      setIng(r.ingredients);
+    });
+  }, [id]);
+  const save = () => putJSON(`/recipes/${id}`, {title,instructions,ingredients});
+
+  const delIt = async () => {
+    await del(`/recipes/${id}`);
+    navigate("/");   // react-router-dom
+  };
+  
 
   useEffect(() => {
     const url = searchTerm
